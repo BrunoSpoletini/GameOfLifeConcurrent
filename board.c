@@ -80,6 +80,14 @@ void board_show(board_t board, char *res){
     printf ("%s\n", resultado);
 }
 
+/* Destroy board */
+void board_destroy(board_t *board){
+    for (int i = 0; i < board->columns; i++){
+        free(board->estado[i]);
+    }
+    free(board->estado);
+    free(board);
+}
 
 int main (){
     char res[TAM_MAX];
@@ -99,6 +107,10 @@ int main (){
     //board_load(tablero, texto);
 
     board_show(*tablero, res);
+
+    board_destroy(tablero);
+
+    //gcc board.c board.h && ./a.out 
 
     return 0;
 }
