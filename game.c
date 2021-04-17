@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <pthread.h>
+#include <semaphore.h>
 
 /* Cargamos el juego desde un archivo */
 game_t *loadGame(const char *filename) {
@@ -23,6 +25,10 @@ game_t *loadGame(const char *filename) {
 
     board_load(board, rleArray);
 
+    game_t* game->board = board;
+    game_t* game->cycles = nCycles;
+
+    return(game);
 }
 
 void writeBoard(board_t board, const char *filename) {
@@ -35,6 +41,28 @@ void writeBoard(board_t board, const char *filename) {
     
 }
 
-board_t *congwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
+board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
+    pthread_t threads[nuproc];
+    void* res;
+    for (int i = 0; i < nuproc; i++)
+        pthread_create(&threads[i], NULL, evolve, (void *)board );
 
+    for (int i = 0; i < nuproc; i++)
+        pthread_join(threads[i], &res);
+
+}
+
+void* evolve() {
+    return NULL;
+}
+
+int main(int argc, char** argv) {
+
+    game_t* simGoL = loadGame(argv[1]);
+    board_t* board = conwayGoL(simGoL->board, simGoL->cycles, get_nprocs());
+    const char filename[1000];
+    filename = strtok(argv[1], '.');
+    writeBoard(board, filename);
+
+    return 0;
 }

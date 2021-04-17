@@ -7,9 +7,12 @@
 
 enum State {ALIVE, DEAD};
 /******************************************************************************/
-struct _game;
 
-typedef struct _game game_t;
+typedef struct _game {
+    unsigned int cycles;
+    board_t* board;
+} game_t;
+
 /******************************************************************************/
 
 /* Cargamos el juego desde un archivo */
@@ -20,6 +23,6 @@ void writeBoard(board_t board, const char *filename);
 
 /* Simulamos el Juego de la Vida de Conway con tablero 'board' la cantidad de
 ciclos indicados en 'cycles' en 'nuprocs' unidades de procesamiento*/
-board_t *congwayGoL(board_t *board, unsigned int cycles, const int nuproc);
+board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc);
 
 #endif
