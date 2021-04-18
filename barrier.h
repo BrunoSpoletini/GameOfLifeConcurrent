@@ -11,7 +11,6 @@ typedef struct cond_barrier barrier_t;
 typedef struct cond_barrier {
     unsigned int count;
     unsigned int waiting;
-    bool state;
     pthread_mutex_t mutex;
     pthread_cond_t cond
 } barrier_t;
