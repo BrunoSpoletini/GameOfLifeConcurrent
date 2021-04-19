@@ -12,7 +12,7 @@ typedef struct cond_barrier {
     unsigned int count;
     unsigned int waiting;
     pthread_mutex_t mutex;
-    pthread_cond_t cond
+    pthread_cond_t cond;
 } barrier_t;
 /************/
 

@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <pthread.h>
-#include <semaphore.h>
 
 /* Cargamos el juego desde un archivo */
 game_t *loadGame(const char *filename) {
@@ -44,6 +43,7 @@ void writeBoard(board_t board, const char *filename) {
 board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
     pthread_t threads[nuproc];
     void* res;
+    barrier_init(barrier_t *barr, unsigned int count)
     for (int i = 0; i < nuproc; i++)
         pthread_create(&threads[i], NULL, evolve, (void *)board );
 
@@ -53,6 +53,7 @@ board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
 }
 
 void* evolve() {
+    
     return NULL;
 }
 
