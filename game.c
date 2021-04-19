@@ -46,7 +46,7 @@ void writeBoard(board_t board, const char *filename) {
 
     // BOARD SHOW
     for (int i = 0; i < board.columns; i++)
-        fprintf(puntSalida, "%s\n", board.estado[i]);
+        fprintf(puntSalida, "%s\n", board.state[i]);
 
     fclose(writeFile);
     

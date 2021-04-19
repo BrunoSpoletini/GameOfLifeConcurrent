@@ -8,7 +8,7 @@
 
 
 typedef struct _board {
-    char **estado;
+    char **state;
     int rows;
     int columns;
 } board_t;
@@ -23,7 +23,7 @@ typedef struct _board {
 int board_init(board_t *board, size_t col, size_t row);
 
 /* Creación del tablero con un elemento por default*/
-int board_init_def(board_t *board, size_t col, size_t row, char def);
+//int board_init_def(board_t *board, size_t col, size_t row, char def);
 
 /* Leer el tablero en una posición (col, row) */
 char board_get(board_t board, unsigned int col, unsigned int row);

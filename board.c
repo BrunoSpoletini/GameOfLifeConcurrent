@@ -11,48 +11,50 @@ int board_init(board_t *board, size_t col, size_t row){
     if (!board)
         return 1;
 
-    board->estado = malloc(sizeof(char*) * col);
-    if (!board->estado)
+    board->state = malloc(sizeof(char*) * row);
+    if (!board->state)
         return 1;
+
+    for (int i = 0; i < row; i++){
+
+        board->state[i] = malloc(sizeof(char) * col);
+        if (!board->state[i])
+            return 1;
+    }
 
     board->rows = row;
     board->columns = col;
-    for (int i = 0; i < col; i++){
 
-        board->estado[i] = malloc(sizeof(char) * row);
-        if (!board->estado[i])
-            return 1;
-    }
     return 0;
 }
 
-/* Creación del tablero con un elemento por default*/
+/* Creación del tablero con un elemento por default
 int board_init_def(board_t *board, size_t col, size_t row, char def){
     if (board_init(board, col, row) != 0)
         return 1;
 
     for (int i = 0; i < col; i++){
         for (int j = 0; j < row; j++){
-            board->estado[i][j] = def;
+            board->state[i][j] = def;
         }
     }
 
     return 0;
-}
+}*/
 
 /* Leer el tablero en una posición (col, row) */
 char board_get(board_t board, unsigned int col, unsigned int row){
-    return board.estado[col][row];
+    return board.state[row][col];
 }
 
 /* Leer el tablero en una posición asumiendo que el tablero es 'redondo'.*/
 char board_get_round(board_t board, int col, int row){
-    return board.estado[col % board.columns][row % board.columns];
+    return board.state[row % board.columns][col % board.columns];
 }
 
 /* Asignarle un valor 'val' a la posición (col, row) del tablero*/
 int board_set(board_t board, unsigned int col, unsigned int row, char val){
-    board.estado[col % board.columns][row % board.columns] = val;
+    board.state[row % board.columns][col % board.columns] = val;
     return 0;
 }
 
@@ -75,11 +77,11 @@ void board_show(board_t board, char *res){
     int cont = 0, k = 0;
     char caracter, resultado[TAM_MAX], buff[TAM_MAX];
     strcpy(resultado, "");
-    for (int i = 0; i < board.columns; i++){
-        for (int j = 0; board.estado[i][j] != '\0'; j++ ){
-            caracter = board.estado[i][j];
+    for (int i = 0; i < board.row; i++){
+        for (int j = 0; board.state[i][j] != '\0'; j++ ){
+            caracter = board.state[i][j];
             cont++;
-            if ( board.estado[i][j] != board.estado[i][j+1]){
+            if ( board.state[i][j] != board.state[i][j+1]){
                 sprintf(buff, "%d", cont);
                 strncat(resultado , buff, strlen(buff));
 
@@ -97,10 +99,10 @@ void board_show(board_t board, char *res){
 
 /* Destroy board */
 void board_destroy(board_t *board){
-    for (int i = 0; i < board->columns; i++){
-        free(board->estado[i]);
+    for (int i = 0; i < board->rows; i++){
+        free(board->state[i]);
     }
-    free(board->estado);
+    free(board->state);
     free(board);
 }
 
