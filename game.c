@@ -9,7 +9,7 @@
 game_t *loadGame(const char *filename) {
 
     board_t* board;
-    int nCycles, row, col, validRle;
+    int nCycles, row, col, invalidRle = 0;
     char line[MAX_LINE];
 
     FILE *boardFile = fopen(filename, "r");
@@ -19,18 +19,28 @@ game_t *loadGame(const char *filename) {
     }
 
     if (fscanf(boardFile, "%d, %d, %d\n", nCycles, row, col) != 3)
+        invalidRle = 1;
+    
+    if (board_init(board, col, row) != 0){
+        fclose(boardFile);
         return NULL;
+    }
 
-    if (board_init(board, col, row) != 0)
+    for (int rowNumber = 0; fgets(line, MAX_LINE, boardFile) && invalidRle == 0; rowNumber++){
+
+        if (rowNumber >= row)
+            invalidRle = 1;
+
+        if (invalidRle == 0)
+            invalidRle = board_row_load(board, line, rowNumber);
+
+    }
+
+    if (invalidRle != 0){
+        printf("Alguna linea del archivo es invalida\n");
+        board_destroy(board);
+        fclose(boardFile);
         return NULL;
-
-    for (int rowNumber = 0; fgets(line, MAX_LINE, boardFile); rowNumber++){
-
-        validRle = board_row_load(board, line, rowNumber);
-        if (validRle != 0)
-            printf("Alguna linea del archivo es invalida\n");
-            board_destroy(board);
-            return NULL;
     }
 
     fclose(boardFile);
@@ -47,6 +57,8 @@ game_t *loadGame(const char *filename) {
 void writeBoard(board_t board, const char *filename) {
 
     FILE *writeFile = fopen(filename, "w+");
+    if (!writeFile)
+        printf("Fallo escritura del archivo\n");
 
     for (int i = 0; i < board.rows; i++)
         fprintf(writeFile, "%s\n", board.state[i]);
