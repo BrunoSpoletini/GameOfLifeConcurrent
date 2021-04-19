@@ -59,11 +59,27 @@ int board_set(board_t board, unsigned int col, unsigned int row, char val){
 }
 
 /* Leer de una lista de caracteres que codifican un tablero en formato RLE e
-   interpretarla como un tablero */
+   interpretarla como un tablero 
 int board_load(board_t *board, char *str){
     int numCaracteres;
     char caracter;
     for (int i = 0; str[0] != '\0'; str = strchr(str,caracter) + 1){
+        sscanf(str, "%d%c", &numCaracteres, &caracter);  //Si se lee separado por \n se tiene que agregar aca "%d%c\n"
+        printf("%d %c \n", numCaracteres, caracter);
+    }
+
+    return 0;
+}*/
+
+/* Leer de una lista de caracteres que codifican un tablero en formato RLE e
+   interpretarla como una fila del tablero*/
+int board_row_load(board_t *board, char *str){
+    int numCaracteres;
+    char caracter;
+    for (int i = 0; str[i] != '\0'; i++){
+        if (isnumber)
+
+
         sscanf(str, "%d%c", &numCaracteres, &caracter);  //Si se lee separado por \n se tiene que agregar aca "%d%c\n"
         printf("%d %c \n", numCaracteres, caracter);
     }

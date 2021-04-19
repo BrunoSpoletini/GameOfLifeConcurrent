@@ -8,7 +8,7 @@
 game_t *loadGame(const char *filename) {
 
     board_t* board;
-    int nCycles, row, col;
+    int nCycles, row, col, validRle;
     char buffer[1000], rleArray[5000];
 
     FILE *boardFile = fopen(filename, "r");
@@ -23,13 +23,16 @@ game_t *loadGame(const char *filename) {
     if (board_init(board, col, row) != 0)
         return NULL;
 
-    while (fscanf(boardFile, "%s\n", buffer) != EOF)
-        strcat(rleArray,buffer);
+    while (fgets(line, MAX_LINE, boardFile)){
+
+        validRle = board_row_load(board, line);
+        if (validRle != 0)
+            printf("Alguna linea del archivo es invalida\n");
+            board_destroy(board);
+            return NULL;
+    }
 
     fclose(boardFile);
-
-    if (board_load(board, rleArray) != 0)
-        return NULL;
 
     game_t* game = malloc(sizeof(game_t));
     if (game) {
