@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 
+
+#define MAX_LINE 5000
 /******************************************************************************/
 /* Definición de la estructura de datos del tablero */
 

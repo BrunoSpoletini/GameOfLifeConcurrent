@@ -4,12 +4,13 @@
 #include <string.h>
 #include <pthread.h>
 
+
 /* Cargamos el juego desde un archivo */
 game_t *loadGame(const char *filename) {
 
     board_t* board;
     int nCycles, row, col, validRle;
-    char buffer[1000], rleArray[5000];
+    char line[MAX_LINE];
 
     FILE *boardFile = fopen(filename, "r");
     if (!boardFile) {
@@ -23,9 +24,9 @@ game_t *loadGame(const char *filename) {
     if (board_init(board, col, row) != 0)
         return NULL;
 
-    while (fgets(line, MAX_LINE, boardFile)){
+    for (int rowNumber = 0; fgets(line, MAX_LINE, boardFile); rowNumber++){
 
-        validRle = board_row_load(board, line);
+        validRle = board_row_load(board, line, rowNumber);
         if (validRle != 0)
             printf("Alguna linea del archivo es invalida\n");
             board_destroy(board);
@@ -47,9 +48,8 @@ void writeBoard(board_t board, const char *filename) {
 
     FILE *writeFile = fopen(filename, "w+");
 
-    // BOARD SHOW
-    for (int i = 0; i < board.columns; i++)
-        fprintf(puntSalida, "%s\n", board.state[i]);
+    for (int i = 0; i < board.rows; i++)
+        fprintf(writeFile, "%s\n", board.state[i]);
 
     fclose(writeFile);
     

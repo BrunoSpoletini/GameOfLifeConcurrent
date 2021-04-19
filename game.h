@@ -3,6 +3,8 @@
 #include "board.h"
 #include "barrier.h"
 
+#define MAX_LINE 5000
+
 /******************************************************************************/
 /* Representamos las células vivas como 'O' y las muertas como 'X' */
 

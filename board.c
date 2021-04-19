@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define TAM_MAX 50000
-
 /* Creación del tablero */
 int board_init(board_t *board, size_t col, size_t row){
     board = malloc(sizeof(board_t));
@@ -73,22 +71,33 @@ int board_load(board_t *board, char *str){
 
 /* Leer de una lista de caracteres que codifican un tablero en formato RLE e
    interpretarla como una fila del tablero*/
-int board_row_load(board_t *board, char *str){
-    int numCaracteres;
-    char caracter;
+int board_row_load(board_t *board, char *str, int rowNumber){
+    int numChar = 0, rowEntry = 0;
+
     for (int i = 0; str[i] != '\0'; i++){
-        if (isnumber)
+        if (isdigit(str[i])){
+            if (isdigit(str[i+1]))
+                numChar += 10 * (str[i] - '0');
+            else    
+                numChar += (str[i] - '0');
+                
+        } else if (str[i] == 'X' || str[i] == 'O'{
+            if (rowEntry + numChar > board->columns)
+                return 1;
 
+            for (; rowEntry < numChar; rowEntry++)
+                board->state[rowNumber][rowEntry] = str[i];
+            numChar = 0;
 
-        sscanf(str, "%d%c", &numCaracteres, &caracter);  //Si se lee separado por \n se tiene que agregar aca "%d%c\n"
-        printf("%d %c \n", numCaracteres, caracter);
+        } else if (str[i] != ' ')
+            return 1;
     }
 
     return 0;
 }
 
 /* Función para mostrar el tablero */
-/* La función 'board_show' asume que hay espacio suficiente en 'res' para alojar el tablero.*/
+/* La función 'board_show' asume que hay espacio suficiente en 'res' para alojar el tablero.
 void board_show(board_t board, char *res){
     int cont = 0, k = 0;
     char caracter, resultado[TAM_MAX], buff[TAM_MAX];
@@ -111,7 +120,7 @@ void board_show(board_t board, char *res){
     }
     resultado[k] = '\0';
     printf ("%s\n", resultado);
-}
+}*/
 
 /* Destroy board */
 void board_destroy(board_t *board){
