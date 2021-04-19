@@ -12,27 +12,39 @@ game_t *loadGame(const char *filename) {
     char buffer[1000], rleArray[5000];
 
     FILE *boardFile = fopen(filename, "r");
+    if (!boardFile) {
+        printf("No se encontro el archivo\n");
+        return NULL;
+    }
 
-    fscanf(boardFile, "%d, %d, %d\n", nCycles, row, col);
+    if (fscanf(boardFile, "%d, %d, %d\n", nCycles, row, col) != 3)
+        return NULL;
 
-    board_init(board, col, row);
+    if (board_init(board, col, row) != 0)
+        return NULL;
 
     while (fscanf(boardFile, "%s\n", buffer) != EOF)
         strcat(rleArray,buffer);
 
     fclose(boardFile);
 
-    board_load(board, rleArray);
+    if (board_load(board, rleArray) != 0)
+        return NULL;
 
-    game_t* game->board = board;
-    game_t* game->cycles = nCycles;
+    game_t* game = malloc(sizeof(game_t));
+    if (game) {
+        game->board = board;
+        game->cycles = nCycles;
+    }
 
-    return(game);
+    return game;
 }
 
 void writeBoard(board_t board, const char *filename) {
 
     FILE *writeFile = fopen(filename, "w+");
+
+    // BOARD SHOW
     for (int i = 0; i < board.columns; i++)
         fprintf(puntSalida, "%s\n", board.estado[i]);
 
@@ -42,28 +54,56 @@ void writeBoard(board_t board, const char *filename) {
 
 board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
     pthread_t threads[nuproc];
+    int status;
     void* res;
-    barrier_init(barrier_t *barr, unsigned int count)
-    for (int i = 0; i < nuproc; i++)
-        pthread_create(&threads[i], NULL, evolve, (void *)board );
+    barrier_t *barr;
 
-    for (int i = 0; i < nuproc; i++)
-        pthread_join(threads[i], &res);
+    status = barrier_init(barr, nuproc);        // Inicio barrier
+    if (status == 0){
+
+        for (int i = 0; i < nuproc; i++)
+            pthread_create(&threads[i], NULL, evolve, (void *)board );          // pasar parte del board y la barrier como el arg
+
+        for (int i = 0; i < nuproc; i++)
+            pthread_join(threads[i], &res);
+
+
+    }
+
+    barrier_destroy(barr);
+
+    return board;
 
 }
 
 void* evolve() {
-    
+    // PARTE 1  procesar su parte 
+    barrier_wait(barr);
+    // PARTE 2  reescribir la nueva
     return NULL;
 }
 
 int main(int argc, char** argv) {
 
     game_t* simGoL = loadGame(argv[1]);
+
+    if (!simGoL){
+        printf("La creacion del juego fallo\n")
+        return 0;
+    }
+
     board_t* board = conwayGoL(simGoL->board, simGoL->cycles, get_nprocs());
-    const char filename[1000];
-    filename = strtok(argv[1], '.');
-    writeBoard(board, filename);
+    free(game_t);
+
+    if (board){
+        const char filename[1000];
+        filename = strtok(argv[1], '.');
+        writeBoard(board, filename);
+
+        board_destroy(board);
+
+    } else
+        printf ("La simulacion del juego fallo\n")
 
     return 0;
 }
