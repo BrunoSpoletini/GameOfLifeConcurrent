@@ -72,7 +72,7 @@ void writeBoard(board_t board, char *filename) {
     
 }
 
-/*board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
+board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
     pthread_t threads[nuproc];
     int status;
     void* res;
@@ -101,14 +101,15 @@ void* evolve() {
     barrier_wait(barr);
     // PARTE 2  reescribir la nueva
     return NULL;
-}*/
+}
 
 
 
 //gcc -Werror -Wall -c board.c
-//gcc -Werror -Wall -o execgame game.c board.o
+//gcc -Werror -Wall -o simulador game.c board.o
 //./execgame Ejemplo.game 
 
+// colocar barrier y board en carpetas para el makefile
 // Checkear args
 int main(int argc, char** argv) {
 
@@ -119,8 +120,7 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    //board_t* board = conwayGoL(simGoL->board, simGoL->cycles, get_nprocs());
-    board_t* board = simGoL->board;
+    board_t* board = conwayGoL(simGoL->board, simGoL->cycles, get_nprocs());
     free(simGoL);
 
     if (board){
@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
         board_destroy(board);
 
     } else
-        printf ("La simulacion del juego fallo\n");
+        printf("La simulacion del juego fallo\n");
 
     return 0;
 }

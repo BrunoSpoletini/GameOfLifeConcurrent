@@ -3,10 +3,8 @@
 
 #include <pthread.h>
 
-/* Definición de la estructura y sinónimo de tipo.*/
-struct cond_barrier;
-
-typedef struct cond_barrier barrier_t;
+/******************************************************************************/
+/* Definición de la estructura de datos de la barrera */
 
 typedef struct cond_barrier {
     unsigned int count;
@@ -14,9 +12,8 @@ typedef struct cond_barrier {
     pthread_mutex_t mutex;
     pthread_cond_t cond;
 } barrier_t;
-/************/
 
-/************/
+/******************************************************************************/
 /* Operaciones*/
 
 /* Creación de una barrera de condición, tomando como argumento la cantidad de

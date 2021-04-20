@@ -1,15 +1,17 @@
 #ifndef GAME_TYPES
 #define GAME_TYPES
+
 #include "board.h"
 #include "barrier.h"
 
-#define MAX_LINE 5000
+#define MAX_LINE 10000
 
 /******************************************************************************/
 /* Representamos las células vivas como 'O' y las muertas como 'X' */
 
 enum State {ALIVE, DEAD};
 /******************************************************************************/
+/* Definición de la estructura de datos del game */
 
 typedef struct _game {
     unsigned int cycles;
@@ -17,6 +19,7 @@ typedef struct _game {
 } game_t;
 
 /******************************************************************************/
+/* Funciones del juego */
 
 /* Cargamos el juego desde un archivo */
 game_t *loadGame(const char *filename);
