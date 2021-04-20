@@ -8,7 +8,6 @@
 /* Cargamos el juego desde un archivo */
 game_t *loadGame(const char *filename) {
 
-    board_t* board = NULL;
     int nCycles, row, col, invalidRle = 0;
     char line[MAX_LINE];
 
@@ -21,12 +20,15 @@ game_t *loadGame(const char *filename) {
     if (fscanf(boardFile, "%d %d %d\n", &nCycles, &row, &col) != 3)
         invalidRle = 1;
     
+    board_t* board = malloc(sizeof(board_t));
     if (board_init(board, col, row) != 0){
         fclose(boardFile);
+        free(board);
         return NULL;
     }
 
-    for (int rowNumber = 0; fgets(line, MAX_LINE, boardFile) && invalidRle == 0; rowNumber++){
+    int rowNumber = 0;
+    for (; fgets(line, MAX_LINE, boardFile) && invalidRle == 0; rowNumber++){
 
         if (rowNumber >= row)
             invalidRle = 1;
@@ -35,6 +37,9 @@ game_t *loadGame(const char *filename) {
             invalidRle = board_row_load(board, line, rowNumber);
 
     }
+
+    if (rowNumber != row)
+        invalidRle = 1;
 
     if (invalidRle != 0){
         printf("Alguna linea del archivo es invalida\n");
@@ -54,9 +59,9 @@ game_t *loadGame(const char *filename) {
     return game;
 }
 
-void writeBoard(board_t board, const char *filename) {
+void writeBoard(board_t board, char *filename) {
 
-    FILE *writeFile = fopen(filename, "w+");
+    FILE *writeFile = fopen(strcat(filename,".final"), "w+");
     if (!writeFile)
         printf("Fallo escritura del archivo\n");
 
@@ -98,6 +103,13 @@ void* evolve() {
     return NULL;
 }*/
 
+
+
+//gcc -Werror -Wall -c board.c
+//gcc -Werror -Wall -o execgame game.c board.o
+//./execgame Ejemplo.game 
+
+// Checkear args
 int main(int argc, char** argv) {
 
     game_t* simGoL = loadGame(argv[1]);
@@ -123,3 +135,4 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+

@@ -5,7 +5,6 @@
 
 /* Creación del tablero */
 int board_init(board_t *board, size_t col, size_t row){
-    board = malloc(sizeof(board_t));
     if (!board)
         return 1;
 
@@ -73,26 +72,33 @@ int board_load(board_t *board, char *str){
 /* Leer de una lista de caracteres que codifican un tablero en formato RLE e
    interpretarla como una fila del tablero*/
 int board_row_load(board_t *board, char *str, int rowNumber){
-    int numChar = 0, rowEntry = 0;
+    char digArr[MAX_LINE];
+    int numChar, rowEntry = 0, j = 0;
 
     for (int i = 0; str[i] != '\0'; i++){
-        if (isdigit(str[i])){
-            if (isdigit(str[i+1]))
-                numChar += 10 * (str[i] - '0');
-            else    
-                numChar += (str[i] - '0');
+        if (isdigit(str[i])) {
+            digArr[j] = str[i];
+            j++;
                 
         } else if (str[i] == 'X' || str[i] == 'O') {
+            digArr[j] = '\0';
+            numChar = atoi(digArr);
+            j=0;
+
             if (rowEntry + numChar > board->columns)
                 return 1;
 
-            for (; rowEntry < numChar; rowEntry++)
+            for (int k = 0; k < numChar; k++) {
                 board->state[rowNumber][rowEntry] = str[i];
-            numChar = 0;
+                rowEntry++;
+            }
 
-        } else if (str[i] != ' ')
+        } else if (str[i] != ' ' && str[i] != '\n' && str[i] != '\r')
             return 1;
     }
+    
+    if (rowEntry != board->columns)
+        return 1;
 
     return 0;
 }
