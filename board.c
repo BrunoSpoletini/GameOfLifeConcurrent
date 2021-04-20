@@ -13,7 +13,7 @@ int board_init(board_t *board, size_t col, size_t row){
     if (!board->state)
         return 1;
 
-    for (int i = 0; i < row; i++){
+    for (int i = 0; i < row; i++) {
 
         board->state[i] = malloc(sizeof(char) * col);
         if (!board->state[i])
@@ -40,21 +40,22 @@ int board_init_def(board_t *board, size_t col, size_t row, char def){
     return 0;
 }*/
 
-/* Leer el tablero en una posición (col, row) */
+/* Leer el tablero en una posición (col, row) 
 char board_get(board_t board, unsigned int col, unsigned int row){
     return board.state[row][col];
-}
+}*/
 
-/* Leer el tablero en una posición asumiendo que el tablero es 'redondo'.*/
+/* Leer el tablero en una posición asumiendo que el tablero es 'redondo'.
 char board_get_round(board_t board, int col, int row){
     return board.state[row % board.columns][col % board.columns];
-}
+}*/
 
-/* Asignarle un valor 'val' a la posición (col, row) del tablero*/
+/* Asignarle un valor 'val' a la posición (col, row) del tablero
 int board_set(board_t board, unsigned int col, unsigned int row, char val){
     board.state[row % board.columns][col % board.columns] = val;
     return 0;
-}
+}*/
+
 
 /* Leer de una lista de caracteres que codifican un tablero en formato RLE e
    interpretarla como un tablero 
@@ -81,7 +82,7 @@ int board_row_load(board_t *board, char *str, int rowNumber){
             else    
                 numChar += (str[i] - '0');
                 
-        } else if (str[i] == 'X' || str[i] == 'O'{
+        } else if (str[i] == 'X' || str[i] == 'O') {
             if (rowEntry + numChar > board->columns)
                 return 1;
 
@@ -131,7 +132,7 @@ void board_destroy(board_t *board){
     free(board);
 }
 
-int main (){
+/*int main (){
     char res[TAM_MAX];
 
     board_t *tablero;
@@ -155,4 +156,4 @@ int main (){
     //gcc board.c board.h && ./a.out 
 
     return 0;
-}
+}*/

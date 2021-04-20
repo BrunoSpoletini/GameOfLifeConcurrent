@@ -1,6 +1,7 @@
 #ifndef BOARD
 #define BOARD
 
+#include <ctype.h>
 #include <stdlib.h>
 
 
@@ -39,6 +40,8 @@ int board_set(board_t board, unsigned int col, unsigned int row, char val);
 /* Leer de una lista de caracteres que codifican un tablero en formato RLE e
  * interpretarla como un tablero */
 int board_load(board_t *board, char *str);
+
+int board_row_load(board_t *board, char *str, int rowNumber);
 
 /* Función para mostrar el tablero */
 /* La función 'board_show' asume que hay espacio suficiente en 'res' para alojar el tablero.*/

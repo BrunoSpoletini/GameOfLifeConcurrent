@@ -8,7 +8,7 @@
 /* Cargamos el juego desde un archivo */
 game_t *loadGame(const char *filename) {
 
-    board_t* board;
+    board_t* board = NULL;
     int nCycles, row, col, invalidRle = 0;
     char line[MAX_LINE];
 
@@ -18,7 +18,7 @@ game_t *loadGame(const char *filename) {
         return NULL;
     }
 
-    if (fscanf(boardFile, "%d, %d, %d\n", nCycles, row, col) != 3)
+    if (fscanf(boardFile, "%d %d %d\n", &nCycles, &row, &col) != 3)
         invalidRle = 1;
     
     if (board_init(board, col, row) != 0){
@@ -67,7 +67,7 @@ void writeBoard(board_t board, const char *filename) {
     
 }
 
-board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
+/*board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc) {
     pthread_t threads[nuproc];
     int status;
     void* res;
@@ -96,29 +96,30 @@ void* evolve() {
     barrier_wait(barr);
     // PARTE 2  reescribir la nueva
     return NULL;
-}
+}*/
 
 int main(int argc, char** argv) {
 
     game_t* simGoL = loadGame(argv[1]);
 
     if (!simGoL){
-        printf("La creacion del juego fallo\n")
+        printf("La creacion del juego fallo\n");
         return 0;
     }
 
-    board_t* board = conwayGoL(simGoL->board, simGoL->cycles, get_nprocs());
-    free(game_t);
+    //board_t* board = conwayGoL(simGoL->board, simGoL->cycles, get_nprocs());
+    board_t* board = simGoL->board;
+    free(simGoL);
 
     if (board){
-        const char filename[1000];
-        filename = strtok(argv[1], '.');
-        writeBoard(board, filename);
+        char* filename;
+        filename = strtok(argv[1], ".");
+        writeBoard((*board), filename);
 
         board_destroy(board);
 
     } else
-        printf ("La simulacion del juego fallo\n")
+        printf ("La simulacion del juego fallo\n");
 
     return 0;
 }
