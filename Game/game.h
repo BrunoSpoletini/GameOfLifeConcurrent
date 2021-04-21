@@ -1,8 +1,8 @@
 #ifndef GAME_TYPES
 #define GAME_TYPES
 
-#include "board.h"
-#include "barrier.h"
+#include "../Board/board.h"
+#include "../Barrier/barrier.h"
 
 #define MAX_LINE 10000
 
@@ -36,12 +36,12 @@ game_t *loadGame(const char *filename);
 /* Guardamos el tablero 'board' en el archivo 'filename' */
 void writeBoard(board_t board, char *filename);
 
-char next_state(board_t *board, row, col);
+char next_state(board_t *board, int row, int col);
 
-void* simT(void argsT)
+void* simT(void* argsT);
 
 /* Simulamos el Juego de la Vida de Conway con tablero 'board' la cantidad de
 ciclos indicados en 'cycles' en 'nuprocs' unidades de procesamiento*/
-board_t *conwayGoL(board_t *board, unsigned int cycles, const int nuproc);
+board_t *conwayGoL(board_t *board, unsigned int cycles, int nuproc);
 
 #endif

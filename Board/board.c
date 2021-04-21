@@ -11,10 +11,10 @@ int board_init(board_t *board, size_t row, size_t col){
     if (!board->state)
         return 1;
 
-    for (int i = 0; i < row; i++) {
+    for (int i = 0; i < (int)row; i++) {
 
         board->state[i] = malloc(sizeof(char) * col);
-        if (!board->state[i]){
+        if (!board->state[i]) {
             free(board->state);
             return 1;
         }
@@ -27,27 +27,28 @@ int board_init(board_t *board, size_t row, size_t col){
 }
 
 char board_get(board_t *board, unsigned int row, unsigned int col){
-    if (row >= board->rows || col >= board->columns)
+    if (row >= (unsigned int)board->rows || col >= (unsigned int)board->columns)
         return ' ';
 
     return board->state[row][col];
 }
 
 char board_get_round(board_t *board, int row, int col){
-    row = row % board->rows;
-    col = col % board->rows;
-
     if (row < 0)
-        row += board->rows;
+        row = board->rows - 1;
+    else
+        row = row % board->rows;
 
     if (col < 0)
-        col += board->columns;
+        col = board->columns - 1;
+    else
+        col = col % board->rows;
 
     return board->state[row][col];
 }
 
 int board_set(board_t *board, unsigned int row, unsigned int col, char val){
-    if (row >= board->rows || col >= board->columns)
+    if (row >= (unsigned int)board->rows || col >= (unsigned int)board->columns)
         return 1;
 
     board->state[row][col] = val;
@@ -85,6 +86,17 @@ int board_row_load(board_t *board, char *str, int rowNumber){
 
     return 0;
 }
+
+void board_show(board_t board, char *res) {
+    for (int i = 0; i < board.rows; i++) {
+        for(int j = 0; j < board.columns; j++) {
+            res[i * (board.columns + 1) + j] = board.state[i][j];
+        }
+        res[i * (board.columns + 1) + board.columns] = '\n';
+    }
+    res[(board.columns + 1) * board.columns] = '\0';
+}
+
 
 board_t* copy_board_init (board_t *board) {
 

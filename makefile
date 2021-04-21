@@ -1,4 +1,4 @@
-ARG = -Wall -Wextra -Werror -std=c99 -lpthread
+ARG = -Wall -Wextra -Werror -g -std=c99 -pthread
 BARRIER = ./Barrier/barrier
 BOARD = ./Board/board
 GAME = ./Game/game
@@ -6,7 +6,7 @@ TEMP = game.o barrier.o board.o simulador
 
 all: simulador
 
-interprete: simulador.c game.o board.o barrier.o
+simulador: simulador.c game.o board.o barrier.o
 	gcc $(ARG) -o simulador simulador.c game.o board.o barrier.o -lm
 
 game.o: $(GAME).c $(GAME).h

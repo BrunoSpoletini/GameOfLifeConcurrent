@@ -1,0 +1,158 @@
+==21803== Memcheck, a memory error detector
+==21803== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==21803== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==21803== Command: ./simulador Ejemplo.game
+==21803== Parent PID: 16746
+==21803== 
+--21803-- 
+--21803-- Valgrind options:
+--21803--    --leak-check=full
+--21803--    --show-leak-kinds=all
+--21803--    --track-origins=yes
+--21803--    --verbose
+--21803--    --log-file=valgrind-out.txt
+--21803-- Contents of /proc/version:
+--21803--   Linux version 5.4.0-70-generic (buildd@lgw01-amd64-039) (gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #78~18.04.1-Ubuntu SMP Sat Mar 20 14:10:07 UTC 2021
+--21803-- 
+--21803-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--21803-- Page sizes: currently 4096, max supported 4096
+--21803-- Valgrind library directory: /usr/lib/valgrind
+--21803-- Reading syms from /media/poma/shared/TP1 SO1/GameOfLifeConcurrent/simulador
+--21803-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
+--21803--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
+--21803--   .. CRC mismatch (computed 0ef8daab wanted 65bccefe)
+--21803--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
+--21803--   .. CRC is valid
+--21803-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--21803--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--21803--   .. CRC mismatch (computed 41ddb025 wanted 9972f546)
+--21803--    object doesn't have a symbol table
+--21803--    object doesn't have a dynamic symbol table
+--21803-- Scheduler: using generic scheduler lock implementation.
+--21803-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==21803== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-21803-by-poma-on-???
+==21803== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-21803-by-poma-on-???
+==21803== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-21803-by-poma-on-???
+==21803== 
+==21803== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==21803== don't want to do, unless you know exactly what you're doing,
+==21803== or are doing some strange experiment):
+==21803==   /usr/lib/valgrind/../../bin/vgdb --pid=21803 ...command...
+==21803== 
+==21803== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==21803==   /path/to/gdb ./simulador
+==21803== and then give GDB the following command
+==21803==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=21803
+==21803== --pid is optional if only one valgrind process is running
+==21803== 
+--21803-- REDIR: 0x4020d20 (ld-linux-x86-64.so.2:strlen) redirected to 0x580608c1 (???)
+--21803-- REDIR: 0x4020b00 (ld-linux-x86-64.so.2:index) redirected to 0x580608db (???)
+--21803-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--21803--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--21803--   .. CRC mismatch (computed 50df1b30 wanted 4800a4cf)
+--21803--    object doesn't have a symbol table
+--21803-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--21803--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--21803--   .. CRC mismatch (computed f893b962 wanted 95ee359e)
+--21803--    object doesn't have a symbol table
+==21803== WARNING: new redirection conflicts with existing -- ignoring it
+--21803--     old: 0x04020d20 (strlen              ) R-> (0000.0) 0x580608c1 ???
+--21803--     new: 0x04020d20 (strlen              ) R-> (2007.0) 0x04c34db0 strlen
+--21803-- REDIR: 0x401d540 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c35ee0 (strcmp)
+--21803-- REDIR: 0x4021260 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c394f0 (mempcpy)
+--21803-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.27.so
+--21803--   Considering /usr/lib/debug/.build-id/68/f36706eb2e6eee4046c4fdca2a19540b2f6113.debug ..
+--21803--   .. build-id is valid
+--21803-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
+--21803--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
+--21803--   .. CRC mismatch (computed cb654923 wanted 8713c55a)
+--21803--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
+--21803--   .. CRC is valid
+--21803-- REDIR: 0x50fbb70 (libc.so.6:memmove) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fae80 (libc.so.6:strncpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fbe50 (libc.so.6:strcasecmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fa8d0 (libc.so.6:strcat) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50faeb0 (libc.so.6:rindex) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fd5a0 (libc.so.6:rawmemchr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fbce0 (libc.so.6:mempcpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fbb10 (libc.so.6:bcmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fae40 (libc.so.6:strncmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fa940 (libc.so.6:strcmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fbc40 (libc.so.6:memset) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x5118ed0 (libc.so.6:wcschr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fade0 (libc.so.6:strnlen) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fa9b0 (libc.so.6:strcspn) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fbea0 (libc.so.6:strncasecmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fa980 (libc.so.6:strcpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fbfe0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50faee0 (libc.so.6:strpbrk) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fa900 (libc.so.6:index) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fadb0 (libc.so.6:strlen) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x51054a0 (libc.so.6:memrchr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fbef0 (libc.so.6:strcasecmp_l) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fbae0 (libc.so.6:memchr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x5119c90 (libc.so.6:wcslen) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fb190 (libc.so.6:strspn) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fbe20 (libc.so.6:stpncpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fbdf0 (libc.so.6:stpcpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fd5d0 (libc.so.6:strchrnul) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x50fbf40 (libc.so.6:strncasecmp_l) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--21803-- REDIR: 0x51eb300 (libc.so.6:__strrchr_avx2) redirected to 0x4c34730 (rindex)
+--21803-- REDIR: 0x50f4140 (libc.so.6:malloc) redirected to 0x4c31aa0 (malloc)
+--21803-- REDIR: 0x50fb6c0 (libc.so.6:__GI_strstr) redirected to 0x4c39760 (__strstr_sse2)
+--21803-- REDIR: 0x51e7360 (libc.so.6:__memchr_avx2) redirected to 0x4c35f80 (memchr)
+--21803-- REDIR: 0x51eba10 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4c386e0 (memmove)
+--21803-- REDIR: 0x50f4a30 (libc.so.6:free) redirected to 0x4c32cd0 (free)
+--21803-- REDIR: 0x50f7170 (libc.so.6:calloc) redirected to 0x4c33a70 (calloc)
+--21803-- REDIR: 0x51e7240 (libc.so.6:__strspn_sse42) redirected to 0x4c39990 (strspn)
+--21803-- REDIR: 0x51e6fb0 (libc.so.6:__strcspn_sse42) redirected to 0x4c398d0 (strcspn)
+==21803== Invalid write of size 1
+==21803==    at 0x109C8E: board_show (board.c:97)
+==21803==    by 0x1090FD: writeBoard (game.c:70)
+==21803==    by 0x108DD6: main (simulador.c:26)
+==21803==  Address 0x544fdda is 6 bytes before an unallocated block of size 4,186,624 in arena "client"
+==21803== 
+--21803-- REDIR: 0x51eb110 (libc.so.6:__strchrnul_avx2) redirected to 0x4c39020 (strchrnul)
+--21803-- REDIR: 0x51eb4d0 (libc.so.6:__strlen_avx2) redirected to 0x4c34cf0 (strlen)
+==21803== Conditional jump or move depends on uninitialised value(s)
+==21803==    at 0x4C34D08: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21803==    by 0x50BA5D2: vfprintf (vfprintf.c:1643)
+==21803==    by 0x50C1F43: fprintf (fprintf.c:32)
+==21803==    by 0x109119: writeBoard (game.c:72)
+==21803==    by 0x108DD6: main (simulador.c:26)
+==21803==  Uninitialised value was created by a heap allocation
+==21803==    at 0x4C31B0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21803==    by 0x1090E2: writeBoard (game.c:68)
+==21803==    by 0x108DD6: main (simulador.c:26)
+==21803== 
+--21803-- REDIR: 0x51eb9f0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4c39130 (mempcpy)
+==21803== 
+==21803== HEAP SUMMARY:
+==21803==     in use at exit: 0 bytes in 0 blocks
+==21803==   total heap usage: 20 allocs, 20 frees, 10,389 bytes allocated
+==21803== 
+==21803== All heap blocks were freed -- no leaks are possible
+==21803== 
+==21803== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==21803== 
+==21803== 1 errors in context 1 of 2:
+==21803== Conditional jump or move depends on uninitialised value(s)
+==21803==    at 0x4C34D08: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21803==    by 0x50BA5D2: vfprintf (vfprintf.c:1643)
+==21803==    by 0x50C1F43: fprintf (fprintf.c:32)
+==21803==    by 0x109119: writeBoard (game.c:72)
+==21803==    by 0x108DD6: main (simulador.c:26)
+==21803==  Uninitialised value was created by a heap allocation
+==21803==    at 0x4C31B0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21803==    by 0x1090E2: writeBoard (game.c:68)
+==21803==    by 0x108DD6: main (simulador.c:26)
+==21803== 
+==21803== 
+==21803== 1 errors in context 2 of 2:
+==21803== Invalid write of size 1
+==21803==    at 0x109C8E: board_show (board.c:97)
+==21803==    by 0x1090FD: writeBoard (game.c:70)
+==21803==    by 0x108DD6: main (simulador.c:26)
+==21803==  Address 0x544fdda is 6 bytes before an unallocated block of size 4,186,624 in arena "client"
+==21803== 
+==21803== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)

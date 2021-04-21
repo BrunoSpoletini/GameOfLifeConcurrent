@@ -7,7 +7,7 @@
 /* Definición de la estructura de datos de la barrera */
 
 typedef struct cond_barrier {
-    unsigned int count;
+    unsigned int maxWait;
     unsigned int waiting;
     pthread_mutex_t mutex;
     pthread_cond_t cond;
