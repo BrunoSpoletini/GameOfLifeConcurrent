@@ -1,6 +1,14 @@
 #include "./Game/game.h"
+#include <string.h>
+#include <pthread.h>
+#include <sys/sysinfo.h>
 
 int main(int argc, char** argv) {
+
+    if (argc != 2){
+        perror("Cantidad de argumentos invalida");
+        return 0;
+    }
 
     game_t* simGoL = loadGame(argv[1]);
 
