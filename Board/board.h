@@ -2,7 +2,6 @@
 #define BOARD
 
 #include <stdlib.h>
-#include <stdio.h> //BORRAR TESTEO
 
 #define MAX_DIG 1000
 
@@ -34,8 +33,11 @@ int board_set(board_t *board, unsigned int row, unsigned int col, char val);
 la fila correspondiente en el tablero*/
 int board_row_load(board_t *board, char *str, int rowNumber);
 
+/* Crea una copia del tablero (sin sus entradas) */
 board_t* copy_board_init (board_t *board);
 
+/* Función para mostrar el tablero */
+/* La función 'board_show' asume que hay espacio suficiente en 'res' para alojar el tablero.*/
 void board_show(board_t board, char *res);
 
 /* Destroy board */

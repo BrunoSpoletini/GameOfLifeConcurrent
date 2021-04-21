@@ -1,6 +1,6 @@
 #include "board.h"
-#include <string.h> // atoi()
-#include <ctype.h> // isdigit()
+#include <string.h>
+#include <ctype.h>
 
 
 int board_init(board_t *board, size_t row, size_t col){
@@ -44,8 +44,6 @@ char board_get_round(board_t *board, int row, int col){
         col = board->columns - 1;
     else
         col = col % board->columns;
-
-    printf("NEI: %c\n",board->state[row][col]);
 
     return board->state[row][col];
 }
@@ -97,7 +95,7 @@ void board_show(board_t board, char *res) {
         }
         res[i * (board.columns + 1) + board.columns] = '\n';
     }
-    res[(board.columns + 1) * board.columns] = '\0';
+    res[((board.columns + 1) * board.rows) - 1] = '\0';
 }
 
 

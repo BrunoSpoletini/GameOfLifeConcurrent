@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <pthread.h>
+#include <assert.h>
 
 
 /* Cargamos el juego desde un archivo */
@@ -35,7 +36,6 @@ game_t *loadGame(const char *filename) {
 
         if (invalidRle == 0)
             invalidRle = board_row_load(board, line, rowNumber);
-
     }
 
     if (rowNumber != row)
@@ -63,9 +63,13 @@ void writeBoard(board_t board, char *filename) {
 
     FILE *writeFile = fopen(strcat(filename,".final"), "w+");
     if (!writeFile)
-        perror("Fallo escritura del archivo\n");
+        perror("Fallo abrir archivo escritura\n");
 
-    char* stringBoard = malloc((sizeof(char) * (board.columns + 1) * board.rows) +1);
+    char* stringBoard = malloc(sizeof(char) * (2 * board.columns + 1) * board.rows + 1);
+    if (!stringBoard) {
+        perror("Fallo al crear representacion del board\n");
+        fclose(writeFile);
+    }
 
     board_show(board, stringBoard);
 
@@ -79,25 +83,20 @@ char next_state(board_t *board, int row, int col) {
     State currentState = board->state[row][col];
     int i, j, aliveAround = 0;
 
-    printf("State antes: %c\n",currentState);
     for (i = row - 1; i <= row + 1 && aliveAround <= 4; i++) {
         for (j = col - 1; j <= col + 1 && aliveAround <= 4; j++) {
             if (i != row || j != col){
                 if (board_get_round(board, i, j) == ALIVE)
-                    aliveAround++;
+                    aliveAround++;                                  // Contamos los vecinos vivos
             }
         }
     }
-
-    printf("Vivos: %d\n",aliveAround);
 
     if (currentState == ALIVE && (aliveAround < 2 || aliveAround > 3))
         currentState = DEAD;
 
     else if (currentState == DEAD && aliveAround == 3)
         currentState = ALIVE;
-
-    printf("State dsp: %c\n",currentState);
 
     return currentState;
 }
@@ -111,19 +110,24 @@ void* simT(void* argsT) {
     board_t *readBoard, *writeBoard;
     barrier_t *barr = ((argsT_t*)argsT)->barrier;
 
-    int i, j;
+    int i, j, status = 0;
     unsigned int ncycle = 0;
     for (; ncycle < cycles; ncycle++) {
-        readBoard = ncycle % 2 == 0 ? board : boardCopy;
+        readBoard = ncycle % 2 == 0 ? board : boardCopy;        // Intercambiamos board de escritura y del que leemos segun el ciclo
         writeBoard = ncycle % 2 == 0 ? boardCopy : board;
 
         for (i = rowFrom; i < (int)rowTo; i++){
             for (j = 0; j < (int)board->columns; j++){
-                board_set(writeBoard, i, j, next_state(readBoard, i, j));
+                status += board_set(writeBoard, i, j, next_state(readBoard, i, j));     // Colocamos la entrada a la que evolucionaria en el board de escritura
             }
         }
 
-        barrier_wait(barr);
+        if(status != 0) 
+            perror("Fallo al cambiar una entrada del board\n");
+
+        status = barrier_wait(barr);            // Los hilos se esperan antes de comenzar un nuevo ciclo
+        if (status != 0)
+            perror("Fallo en la barrera\n");
     } 
 
     return NULL;
@@ -131,15 +135,13 @@ void* simT(void* argsT) {
 
 board_t *conwayGoL(board_t *board, unsigned int cycles, int nuproc) {
     int status;
-    barrier_t *barr = malloc(sizeof(barrier_t));
 
     if (nuproc > board->rows)
         nuproc = board->rows;
 
-    nuproc = 1; //BORRAR
-
     pthread_t threads[nuproc];
 
+    barrier_t *barr = malloc(sizeof(barrier_t));
 
     status = barrier_init(barr, nuproc);        // Inicio barrier
     if (status != 0) {
@@ -151,10 +153,14 @@ board_t *conwayGoL(board_t *board, unsigned int cycles, int nuproc) {
     int rowsPerT = board->rows / nuproc;
     int extraRows = board->rows % nuproc;
     int addRow = 0;
-    board_t* boardCopy = copy_board_init(board);
+
+    board_t* boardCopy = copy_board_init(board);        // Creamos un board auxiliar
+    if (!boardCopy)
+        perror("Fallo al crear copia del board\n");
+
     argsT_t argsT[nuproc];
 
-    for (int i = 0; i < nuproc; i++){
+    for (int i = 0; i < nuproc; i++){                   // Estructura de argumentos para cada hilo
         argsT[i].cycles = cycles;
         argsT[i].board = board;
         argsT[i].boardCopy = boardCopy;
@@ -172,12 +178,14 @@ board_t *conwayGoL(board_t *board, unsigned int cycles, int nuproc) {
 
 
     for (int i = 0; i < nuproc; i++)
-        pthread_create(&threads[i], NULL, simT, (void *)&argsT[i]);          // pasar parte del board y la barrier como el arg
+        assert(! pthread_create(&threads[i], NULL, simT, (void *)&argsT[i]));        
 
     for (int i = 0; i < nuproc; i++)
-        pthread_join(threads[i], NULL);
+        assert(! pthread_join(threads[i], NULL));
 
-    barrier_destroy(barr);
+    status = barrier_destroy(barr);
+    if (status != 0) 
+        perror("Fallo al destruir barrera\n");
 
     if (cycles % 2 == 1) {
         board_destroy(board);

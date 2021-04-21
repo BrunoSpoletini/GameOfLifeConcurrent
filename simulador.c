@@ -2,6 +2,7 @@
 #include <string.h>
 #include <pthread.h>
 #include <sys/sysinfo.h>
+#include <stdio.h>
 
 int main(int argc, char** argv) {
 
