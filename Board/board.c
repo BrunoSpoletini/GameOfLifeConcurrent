@@ -88,6 +88,7 @@ int board_row_load(board_t *board, char *str, int rowNumber){
     return 0;
 }
 
+ /*Definición de la estructura de datos del tablero 
 void board_show(board_t board, char *res) {
     for (int i = 0; i < board.rows; i++) {
         for(int j = 0; j < board.columns; j++) {
@@ -98,6 +99,66 @@ void board_show(board_t board, char *res) {
     res[((board.columns + 1) * board.rows) - 1] = '\0';
 }
 
+
+
+void board_show(board_t board, char *res) {
+    int row, col, numChar = 1, resIndex = 0;
+    char currentState, digArr[MAX_DIG];
+     
+    for (row = 0; row < board.rows; row++) {
+        currentState = board.state[row][0];
+        for (col = 0; col < board.columns; col++) {
+            if (currentState == board.state[row][col]) {
+                numChar++;
+            } else {
+                sprintf(digArr, "%d", numChar);
+                printf("%s\n",digArr);
+                numChar = 0;
+                for(int i = 0; digArr[i] != '\0'; i++){
+                    res[resIndex] = digArr[i];
+                    resIndex++;
+                }
+                res[resIndex] = currentState;
+                resIndex++;
+                currentState = board.state[row][col];
+            }
+        }
+        sprintf(digArr, "%d", numChar);
+        numChar = 0;
+        for(int i = 0; digArr[i] != '\0'; i++){
+            res[resIndex] = digArr[i];
+            resIndex++;
+        }
+        res[resIndex] = currentState;
+        resIndex++;
+        currentState = board.state[row][col];
+        res[resIndex] = '\n';
+        resIndex++;
+    }
+    res[resIndex] = '\0';
+}*/
+
+void board_show(board_t board, char *res){
+    int cont = 0, k = 0;
+    char caracter, digArr[MAX_DIG];
+    for (int i = 0; i < board.columns; i++){
+        for (int j = 0; board.state[i][j] != '\0'; j++ ){
+            caracter = board.state[i][j];
+            cont++;
+            if ( board.state[i][j] != board.state[i][j+1]){
+                sprintf(digArr, "%d", cont);
+                strncat(res , digArr, strlen(digArr));
+
+                res [k + strlen(digArr)] = caracter;
+                k += strlen(digArr) + 1;
+                cont = 0;
+            }
+        }
+        res[k] ='\n';
+        k++;
+    }
+    res[k] = '\0';
+}
 
 board_t* copy_board_init (board_t *board) {
 

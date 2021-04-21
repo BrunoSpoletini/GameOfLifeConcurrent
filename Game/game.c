@@ -70,7 +70,6 @@ void writeBoard(board_t board, char *filename) {
         perror("Fallo al crear representacion del board\n");
         fclose(writeFile);
     }
-
     board_show(board, stringBoard);
 
     fprintf(writeFile, "%s\n", stringBoard);

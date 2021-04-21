@@ -2,8 +2,9 @@
 #define BOARD
 
 #include <stdlib.h>
+#include <stdio.h>
 
-#define MAX_DIG 1000
+#define MAX_DIG 100
 
 /******************************************************************************/
 /* Definición de la estructura de datos del tablero */
