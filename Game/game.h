@@ -18,6 +18,15 @@ typedef struct _game {
     board_t* board;
 } game_t;
 
+typedef struct _argsT {
+    unsigned int cycles;
+    unsigned int rowFrom;
+    unsigned int rowTo;
+    board_t* board;
+    board_t* boardCopy;
+    barrier_t* barrier;
+} argsT_t;
+
 /******************************************************************************/
 /* Funciones del juego */
 
@@ -26,6 +35,10 @@ game_t *loadGame(const char *filename);
 
 /* Guardamos el tablero 'board' en el archivo 'filename' */
 void writeBoard(board_t board, char *filename);
+
+char next_state(board_t *board, row, col);
+
+void* simT(void argsT)
 
 /* Simulamos el Juego de la Vida de Conway con tablero 'board' la cantidad de
 ciclos indicados en 'cycles' en 'nuprocs' unidades de procesamiento*/
