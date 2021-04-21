@@ -34,6 +34,7 @@ char board_get(board_t *board, unsigned int row, unsigned int col){
 }
 
 char board_get_round(board_t *board, int row, int col){
+
     if (row < 0)
         row = board->rows - 1;
     else
@@ -42,7 +43,9 @@ char board_get_round(board_t *board, int row, int col){
     if (col < 0)
         col = board->columns - 1;
     else
-        col = col % board->rows;
+        col = col % board->columns;
+
+    printf("NEI: %c\n",board->state[row][col]);
 
     return board->state[row][col];
 }

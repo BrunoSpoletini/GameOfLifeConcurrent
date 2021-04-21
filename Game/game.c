@@ -79,6 +79,7 @@ char next_state(board_t *board, int row, int col) {
     State currentState = board->state[row][col];
     int i, j, aliveAround = 0;
 
+    printf("State antes: %c\n",currentState);
     for (i = row - 1; i <= row + 1 && aliveAround <= 4; i++) {
         for (j = col - 1; j <= col + 1 && aliveAround <= 4; j++) {
             if (i != row || j != col){
@@ -88,13 +89,15 @@ char next_state(board_t *board, int row, int col) {
         }
     }
 
+    printf("Vivos: %d\n",aliveAround);
+
     if (currentState == ALIVE && (aliveAround < 2 || aliveAround > 3))
         currentState = DEAD;
 
     else if (currentState == DEAD && aliveAround == 3)
         currentState = ALIVE;
 
-    
+    printf("State dsp: %c\n",currentState);
 
     return currentState;
 }
@@ -132,6 +135,8 @@ board_t *conwayGoL(board_t *board, unsigned int cycles, int nuproc) {
 
     if (nuproc > board->rows)
         nuproc = board->rows;
+
+    nuproc = 1; //BORRAR
 
     pthread_t threads[nuproc];
 
