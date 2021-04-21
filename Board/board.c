@@ -26,31 +26,31 @@ int board_init(board_t *board, size_t row, size_t col){
     return 0;
 }
 
-char board_get(board_t board, unsigned int row, unsigned int col){
-    if (row >= board.rows || col >= board.columns)
+char board_get(board_t *board, unsigned int row, unsigned int col){
+    if (row >= board->rows || col >= board->columns)
         return ' ';
 
-    return board.state[row][col];
+    return board->state[row][col];
 }
 
-char board_get_round(board_t board, int row, int col){
-    row = row % board.rows;
-    col = col % board.rows;
+char board_get_round(board_t *board, int row, int col){
+    row = row % board->rows;
+    col = col % board->rows;
 
     if (row < 0)
-        row += board.rows;
+        row += board->rows;
 
     if (col < 0)
-        col += board.columns;
+        col += board->columns;
 
-    return board.state[row][col];
+    return board->state[row][col];
 }
 
-int board_set(board_t board, unsigned int row, unsigned int col, char val){
-    if (row >= board.rows || col >= board.columns)
+int board_set(board_t *board, unsigned int row, unsigned int col, char val){
+    if (row >= board->rows || col >= board->columns)
         return 1;
 
-    board.state[row][col] = val;
+    board->state[row][col] = val;
     return 0;
 }
 
@@ -84,6 +84,18 @@ int board_row_load(board_t *board, char *str, int rowNumber){
         return 1;
 
     return 0;
+}
+
+board_t* copy_board_init (board_t *board) {
+
+    board_t* boardCopy = malloc(sizeof(board_t));
+
+    if (board_init(boardCopy, board->rows, board->columns) != 0){
+        free(boardCopy);
+        return NULL;
+    }
+
+    return boardCopy;
 }
 
 void board_destroy(board_t *board){
