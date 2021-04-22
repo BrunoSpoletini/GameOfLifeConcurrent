@@ -65,17 +65,18 @@ void writeBoard(board_t board, char *filename) {
     if (!writeFile)
         perror("Fallo abrir archivo escritura\n");
 
-    char* stringBoard = malloc(sizeof(char) * (2 * board.columns + 1) * board.rows + 1);
-    if (!stringBoard) {
-        perror("Fallo al crear representacion del board\n");
-        fclose(writeFile);
-    }
+    //char* stringBoard = malloc(sizeof(char) * (2 * board.columns + 1) * board.rows + 1);
+    char stringBoard[10000] = "";
+    //if (!stringBoard) {
+    //    perror("Fallo al crear representacion del board\n");
+    //    fclose(writeFile);
+    //}
     board_show(board, stringBoard);
 
     fprintf(writeFile, "%s\n", stringBoard);
 
     fclose(writeFile);
-    free(stringBoard);
+    //free(stringBoard);
 }
 
 char next_state(board_t *board, int row, int col) {
