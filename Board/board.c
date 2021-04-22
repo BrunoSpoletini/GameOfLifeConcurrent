@@ -145,7 +145,12 @@ void board_show(board_t board, char *res){
         for (int col = 0; col < board.columns; col++){
             currentState = board.state[row][col];
             numChar++;
-            if (board.state[row][col] != board.state[row][col+1]){
+            if (col + 1 == board.columns) {
+                sprintf(digArr, "%d%c", numChar, currentState);
+                strcat(res , digArr);
+                numChar = 0;
+            }
+            else if (board.state[row][col] != board.state[row][col+1]){
                 sprintf(digArr, "%d%c", numChar, currentState);
                 strcat(res , digArr);
                 numChar = 0;
