@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MAX_DIG 100
+#define MAX_AUX 100
 
 /******************************************************************************/
 /* Definición de la estructura de datos del tablero */

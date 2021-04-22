@@ -35,15 +35,14 @@ char board_get(board_t *board, unsigned int row, unsigned int col){
 
 char board_get_round(board_t *board, int row, int col){
 
+    row = row % board->rows;
+    col = col % board->columns;
+
     if (row < 0)
-        row = board->rows - 1;
-    else
-        row = row % board->rows;
+        row += board->rows;
 
     if (col < 0)
-        col = board->columns - 1;
-    else
-        col = col % board->columns;
+        col += board->columns;
 
     return board->state[row][col];
 }
@@ -57,7 +56,7 @@ int board_set(board_t *board, unsigned int row, unsigned int col, char val){
 }
 
 int board_row_load(board_t *board, char *str, int rowNumber){
-    char digArr[MAX_DIG];
+    char digArr[MAX_AUX];
     int numChar, rowEntry = 0, j = 0;
 
     for (int i = 0; str[i] != '\0'; i++){
@@ -88,102 +87,23 @@ int board_row_load(board_t *board, char *str, int rowNumber){
     return 0;
 }
 
- /*Definición de la estructura de datos del tablero 
-void board_show(board_t board, char *res) {
-    for (int i = 0; i < board.rows; i++) {
-        for(int j = 0; j < board.columns; j++) {
-            res[i * (board.columns + 1) + j] = board.state[i][j];
-        }
-        res[i * (board.columns + 1) + board.columns] = '\n';
-    }
-    res[((board.columns + 1) * board.rows) - 1] = '\0';
-}
-
-
-
-void board_show(board_t board, char *res) {
-    int row, col, numChar = 1, resIndex = 0;
-    char currentState, digArr[MAX_DIG];
-     
-    for (row = 0; row < board.rows; row++) {
-        currentState = board.state[row][0];
-        for (col = 0; col < board.columns; col++) {
-            if (currentState == board.state[row][col]) {
-                numChar++;
-            } else {
-                sprintf(digArr, "%d", numChar);
-                printf("%s\n",digArr);
-                numChar = 0;
-                for(int i = 0; digArr[i] != '\0'; i++){
-                    res[resIndex] = digArr[i];
-                    resIndex++;
-                }
-                res[resIndex] = currentState;
-                resIndex++;
-                currentState = board.state[row][col];
-            }
-        }
-        sprintf(digArr, "%d", numChar);
-        numChar = 0;
-        for(int i = 0; digArr[i] != '\0'; i++){
-            res[resIndex] = digArr[i];
-            resIndex++;
-        }
-        res[resIndex] = currentState;
-        resIndex++;
-        currentState = board.state[row][col];
-        res[resIndex] = '\n';
-        resIndex++;
-    }
-    res[resIndex] = '\0';
-}
-*/
 void board_show(board_t board, char *res){
     int numChar = 0;
-    char currentState, digArr[MAX_DIG];
+    strcpy(res, "");
+    char currentState, auxArr[MAX_AUX];
     for (int row = 0; row < board.rows; row++){
         for (int col = 0; col < board.columns; col++){
             currentState = board.state[row][col];
             numChar++;
-            if (col + 1 == board.columns) {
-                sprintf(digArr, "%d%c", numChar, currentState);
-                strcat(res , digArr);
-                numChar = 0;
-            }
-            else if (board.state[row][col] != board.state[row][col+1]){
-                sprintf(digArr, "%d%c", numChar, currentState);
-                strcat(res , digArr);
+            if (col + 1 == board.columns || board.state[row][col] != board.state[row][col+1]){
+                sprintf(auxArr, "%d%c", numChar, currentState);
+                strcat(res , auxArr);
                 numChar = 0;
             }
         }
         strcat(res, "\n");
     }
 }
-
-/*
-void board_show(board_t board, char *res){
-    int cont = 0, k = 0;
-    char caracter, resultado[10000], buff[TAM_MAX];
-    strcpy(resultado, "");
-    for (int i = 0; i < board.columns; i++){
-        for (int j = 0; board.state[i][j] != '\0'; j++ ){
-            caracter = board.state[i][j];
-            cont++;
-            if ( board.estado[i][j] != board.estado[i][j+1]){
-                sprintf(buff, "%d", cont);
-                strncat(resultado , buff, strlen(buff));
-
-                resultado [k + strlen(buff)] = caracter;
-                k += strlen(buff) + 1;
-                cont = 0;
-            }
-        }
-        resultado[k] ='\n';
-        k++;
-    }
-    resultado[k] = '\0';
-    printf ("%s\n", resultado);
-}*/
 
 board_t* copy_board_init (board_t *board) {
 
